@@ -20,6 +20,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun onWallpaper(view: View) {
+        startActivity(Intent(this, WallpaperActivity::class.java))
+    }
+
     fun onVideoWallpaper(view: View) {
         startActivity(Intent(this, VideoLiveWallpaperActivity::class.java))
     }
@@ -27,4 +31,5 @@ class MainActivity : AppCompatActivity() {
     fun onCameraWallpaper(view: View) {
         startActivity(Intent(this, CameraLiveWallpaperActivity::class.java))
     }
+
 }
