@@ -1,6 +1,7 @@
 package com.bill.wallpaperdemo
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.WallpaperManager
 import android.content.Intent
 import android.graphics.Bitmap
@@ -18,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import java.io.IOException
@@ -28,12 +30,14 @@ class WallpaperActivity : AppCompatActivity() {
         private const val TAG = "WallpaperActivity_TAG"
     }
 
+    private var infoTv: AppCompatTextView? = null
     private var wallpaperIv: AppCompatImageView? = null
     private var mBitmap: Bitmap? = null
 
     private lateinit var storagePermissionLauncher: ActivityResultLauncher<String>
     private lateinit var manageExternalStoragePermissionLauncher: ActivityResultLauncher<Intent>
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -43,7 +47,11 @@ class WallpaperActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        infoTv = findViewById(R.id.tv_info)
         wallpaperIv = findViewById(R.id.iv_wallpaper)
+
+        infoTv?.text = "Android ${Build.VERSION.RELEASE}"
+        infoTv?.append("\t\tAPI Version ${Build.VERSION.SDK_INT}")
 
         Log.i(TAG, "Current phone version is ${Build.VERSION.SDK_INT}")
 
@@ -55,14 +63,17 @@ class WallpaperActivity : AppCompatActivity() {
                 // it.resultCode 不表示用户是否授权，只表示用户是否关闭了权限请求界面
                 if (Environment.isExternalStorageManager()) {
                     Log.d(TAG, "User authorization manager external storage permission successful, load wallpaper now")
+                    infoTv?.append("\n有所有文件管理权限")
                     loadCurrentWallpaper()
                 } else {
                     Log.d(TAG, "User authorization manager external storage permission failed")
+                    infoTv?.append("\n没有所有文件管理权限，无法加载系统默认壁纸")
                     Toast.makeText(applicationContext, "No manager external storage permission to read system wallpaper", Toast.LENGTH_LONG).show()
                 }
             }
             if (Environment.isExternalStorageManager()) {
                 Log.i(TAG, "Check manager external storage permission, already granted, load wallpaper now")
+                infoTv?.append("\n有所有文件管理权限")
                 loadCurrentWallpaper()
             } else {
                 Log.i(TAG, "Check manager external storage permission, and no permission, request it now")
@@ -72,9 +83,11 @@ class WallpaperActivity : AppCompatActivity() {
             storagePermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
                 if (isGranted) {
                     Log.d(TAG, "User authorization storage permission successful, load wallpaper now")
+                    infoTv?.append("\n有文件读取权限")
                     loadCurrentWallpaper()
                 } else {
                     Log.d(TAG, "User authorization storage permission failed")
+                    infoTv?.append("\n没有文件读取权限，无法加载系统默认壁纸")
                     Toast.makeText(applicationContext, "No storage permission to read system wallpaper", Toast.LENGTH_LONG).show()
                 }
             }
