@@ -7,13 +7,20 @@
         android:name="android.software.live_wallpaper"
         android:required="true" />
 
-    <!-- READ_EXTERNAL_STORAGE和MANAGE_EXTERNAL_STORAGE用来当前系统的壁纸 -->
+    <!-- READ_EXTERNAL_STORAGE或WRITE_EXTERNAL_STORAGE和MANAGE_EXTERNAL_STORAGE用来获取当前系统的壁纸 -->
+    <!-- 因为32以上文件有读写权限也不能获取当前壁纸，需要申请MANAGE_EXTERNAL_STORAGE，不需要EXTERNAL_STORAGE也可以 -->
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
         android:maxSdkVersion="32" />
     <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission
         android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
+        tools:ignore="ScopedStorage" /> <!-- 设置铃声 -->
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
 
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -30,6 +37,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WallpaperDemo"
         tools:targetApi="31">
+        <activity
+            android:name=".RingtonesActivity"
+            android:exported="false" />
+
         <service
             android:name=".VideoLiveWallpaperService"
             android:exported="true"

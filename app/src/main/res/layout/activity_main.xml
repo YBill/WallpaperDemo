@@ -29,6 +29,7 @@
         app:layout_constraintTop_toBottomOf="@id/btn_wallpaper" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_camera_wallpaper"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:onClick="onCameraWallpaper"
@@ -36,5 +37,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_video_wallpaper" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:onClick="onRingtones"
+        android:text="Ringtones"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_camera_wallpaper" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

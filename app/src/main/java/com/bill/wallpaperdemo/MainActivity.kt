@@ -32,4 +32,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(Intent(this, CameraLiveWallpaperActivity::class.java))
     }
 
+    fun onRingtones(view: View) {
+        startActivity(Intent(this, RingtonesActivity::class.java))
+    }
+
 }

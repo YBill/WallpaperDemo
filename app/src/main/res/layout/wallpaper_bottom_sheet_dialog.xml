@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/set_home_screen_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Set to home screen" />
+
+    <Button
+        android:id="@+id/set_lock_screen_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Set to lock screen" />
+
+    <Button
+        android:id="@+id/set_home_lock_screen_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Set to home &amp; lock screen" />
+</LinearLayout>

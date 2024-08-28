@@ -22,6 +22,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.io.IOException
 
 class WallpaperActivity : AppCompatActivity() {
@@ -122,11 +123,48 @@ class WallpaperActivity : AppCompatActivity() {
 
     private fun setWallpaperBitmap(bitmap: Bitmap) {
         val wallpaperManager = WallpaperManager.getInstance(this)
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+            try {
+                wallpaperManager.setBitmap(bitmap)
+                Toast.makeText(applicationContext, "Wallpaper set successfully", Toast.LENGTH_SHORT).show()
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        } else {
+            showBottomSheetDialog(bitmap)
+        }
+    }
+
+    private fun setWallpaperBitmap(bitmap: Bitmap, which: Int) {
+        val wallpaperManager = WallpaperManager.getInstance(this)
         try {
-            wallpaperManager.setBitmap(bitmap)
+            wallpaperManager.setBitmap(bitmap, null, true, which)
             Toast.makeText(applicationContext, "Wallpaper set successfully", Toast.LENGTH_SHORT).show()
         } catch (e: IOException) {
             e.printStackTrace()
         }
+    }
+
+    private fun showBottomSheetDialog(bitmap: Bitmap) {
+        val bottomSheetDialog = BottomSheetDialog(this)
+        val bottomSheetView: View = layoutInflater.inflate(R.layout.wallpaper_bottom_sheet_dialog, null)
+        bottomSheetDialog.setContentView(bottomSheetView)
+
+        bottomSheetView.findViewById<View>(R.id.set_home_screen_button).setOnClickListener {
+            setWallpaperBitmap(bitmap, WallpaperManager.FLAG_SYSTEM)
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetView.findViewById<View>(R.id.set_lock_screen_button).setOnClickListener {
+            setWallpaperBitmap(bitmap, WallpaperManager.FLAG_LOCK)
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetView.findViewById<View>(R.id.set_home_lock_screen_button).setOnClickListener {
+            setWallpaperBitmap(bitmap, WallpaperManager.FLAG_SYSTEM or WallpaperManager.FLAG_LOCK)
+            bottomSheetDialog.dismiss()
+        }
+
+        bottomSheetDialog.show()
     }
 }
